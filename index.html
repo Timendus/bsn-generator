@@ -55,7 +55,7 @@
           if ( bsn )
             result.innerHTML = `Het bijbehorende BSN is <code>${bsn}</code>.`;
           else
-            result.innerText = "Geen BSN gevonden. Is de website al helemaal geladen?";
+            result.innerText = "Geen BSN gevonden. Heb je al op start geklikt? Anders zit de hash die je zoekt blijkbaar niet in het gekozen interval.";
         });
 
         // Make generation work
@@ -212,11 +212,15 @@
     </div>
 
     <div class="introduction">
-      <h3>Waarom ik deze website heb gemaakt</h3>
+      <h3>Waarom heb ik deze website gemaakt?</h3>
       <p>
-        Er zijn mensen die van mening zijn dat gegevens geanonimiseerd kunnen
-        worden door BSNs te hashen. Want een hash functie werkt maar één kant op.
-        Dus die oorspronkelijke BSNs kun je niet meer terughalen, toch?
+        Deze website is bedoeld als een waarschuwing.
+      </p>
+      <p>
+        Er zijn mensen die van mening zijn dat gegevens geanonimiseerd of
+        gepseudonimiseerd kunnen worden door BSNs te hashen. Want een hash
+        functie werkt maar één kant op. Dus die oorspronkelijke BSNs kun je niet
+        meer terughalen, toch?
       </p>
       <p>
         Echter, er zijn maar 90.909.090 mogelijke BSNs, en ze voldoen allemaal
@@ -232,10 +236,25 @@
         Gebruik dus <b>nooit</b> het BSN als index voor een "anonieme" dataset,
         ook niet in gehashte vorm.
       </p>
-      <p class="small">
-        (Overigens overtreed je technisch gezien de Nederlandse wet door deze
-        website te gebruiken. Je verwerkt dan namelijk BSNs, wat verboden is
-        zonder een wettelijke grondslag. Foei!)
+      <h3>Juridische voetnoot</h3>
+      <p>
+        Deze website kan overduidelijk ook gebruikt worden om kwaad mee te doen,
+        <b>als</b> iemand zo dom is geweest om BSNs te "beveiligen" met een MD5
+        hash. Ik keur zulk gebruik van deze website stellig af.
+      </p>
+      <p>
+        Weest ook gewaarschuwd dat het gebruik van deze website mogelijk de
+        Nederlandse wet overtreedt. Je verwerkt namelijk BSNs, wat verboden is
+        zonder een wettelijke grondslag. Foei! Het is mij niet helemaal
+        duidelijk of dit ook geldt voor alleen de nummers, zonder persoonlijke
+        informatie.
+      </p>
+      <p>
+        Gebruik van deze website is op eigen risico.
+      </p>
+      <p>
+        Alle BSNs worden in je webbrowser gegenereerd en verwerkt. BSNs worden
+        niet verwerkt door of verstuurd naar een server.
       </p>
     </div>
 
