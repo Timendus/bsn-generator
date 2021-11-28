@@ -53,5 +53,5 @@ async function generate(min, max) {
   // And we're done!
   postMessage({
     type: 'done'
-  })
+  });
 }

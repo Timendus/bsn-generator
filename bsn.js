@@ -1,6 +1,6 @@
 // Genereer alle mogelijke BSNs in het gegeven interval (inclusive)
 function generateBSNs(min, max) {
-  let tempdb = [];
+  const tempdb = [];
   for ( let bsn = min; bsn <= max; bsn++ ) {
     if ( !BSNElfproef(bsn) ) continue;
     // The number is a valid BSN, store it

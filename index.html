@@ -81,10 +81,10 @@
           // One in 11 values is a BSN hit. One hit takes roughly 133 bytes to
           // store, according to a rough measurement with Chrome. Add a bit of a
           // safety margin.
-          const requiredStorage = (finish - start) * 150 / 11;
+          const requiredStorage = (finish - start) / 11 * 150;
           // Less than 50MB is always fine
           if ( requiredStorage < 50000000 ) return true;
-          // Otherwise, ask the browser if we can start
+          // Otherwise, ask the browser if we can store it
           if (navigator.storage && navigator.storage.estimate) {
             const quota = await navigator.storage.estimate();
             const remaining = quota.quota - quota.usage;
@@ -92,7 +92,7 @@
             if ( remaining > requiredStorage ) {
               return true;
             } else {
-              alert("Error: Niet genoeg vrije ruimte beschikbaar. Probeer een kleiner interval.");
+              alert("Error: Niet genoeg vrije opslagruimte beschikbaar. Probeer een kleiner interval.");
               return false;
             }
           } else {
