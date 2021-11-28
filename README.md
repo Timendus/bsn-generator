@@ -36,3 +36,24 @@ Use at your own risk.
 
 All the BSNs are generated client side in the webbrowser, and are not sent to or
 processed by any server.
+
+## Nerdy stuff
+
+The BSN generation, MD5 hashing and storing the result is done in a web worker
+to keep the main thread responsive. The web worker stores all results in a store
+in IndexedDB, which can at the same time be searched through using the search
+form on the main thread. No need to wait for the generation to be finished,
+which is kinda cool.
+
+If you try to actually generate a significant range of possible BSNs, you'll
+discover that it takes much longer than you might reasonably expect. Most of
+that is in writing the results to IndexedDB. At first I kept all results in
+memory, which was much faster. But browsers don't like it when you try to keep
+several Gigabytes of data in a single object in a web worker, so that crashed if
+you tried to generate too big a range.
+
+I'd rather have an unlimited demo that is slow than a limited one that is fast,
+especially when I don't really know the limits and have no way of detecting when
+I run into them. And to be honest, I don't mind it being so slow for large
+ranges. It is plenty fast enough to demo the mechanism on a smaller subset, and
+this keeps bad guys from actually being able to effectively use it 😉
