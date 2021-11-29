@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BSN Generator</title>
     <script type="text/javascript" src="./lib/umd.js"></script>
+    <script type="text/javascript" src="./lib/core.min.js"></script>
+    <script type="text/javascript" src="./lib/md5.min.js"></script>
     <script type="text/javascript">
       window.addEventListener('load', async () => {
         const target = document.querySelector('#bsns');
         const progressBar = document.querySelector('#bar');
         const generate = document.querySelector('#generate');
         const search = document.querySelector('#search');
+        const hashbox = document.querySelector('#hash');
         const result = document.querySelector('#result');
         const worker = new Worker('./worker.js?' + Math.random());
         let start, finish;
@@ -27,11 +30,14 @@
               // Show BSNs at the bottom
               document.querySelector('#table').classList.add('active');
               target.innerHTML += `<span>${bsn} → ${hash}</span>`;
-              // Enter a hash in the search bar (if empty)
+              // Enter a hash in the search bar
               if ( search.querySelector('input').value == '' ) {
                 search.querySelector('input').value = hash;
-                result.innerText = "Kijk onderaan de pagina voor meer hashes.";
+                result.innerText = "Kijk onderaan de pagina voor meer BSNs en MD5 hashes.";
               }
+              // Enter a BSN in the hash bar (if empty)
+              if ( hashbox.querySelector('input').value == '' )
+                hashbox.querySelector('input').value = bsn;
               break;
             case 'done':
               progressBar.style.width = `100%`;
@@ -39,6 +45,15 @@
               break;
           }
         };
+
+        // Make hashing work
+        hashbox.addEventListener('submit', e => {
+          e.preventDefault();
+          const bsn = hashbox.querySelector('input').value;
+          if ( !bsn ) return result.innerHTML = `Voer eerst een (eventueel fictief) BSN in.`;
+          const hash = CryptoJS.MD5(bsn).toString();
+          result.innerHTML = `De MD5 hash behorende bij het BSN <code>${bsn}</code> is <code>${hash}</code>.`;
+        });
 
         // Make search work
         const storeName = 'BSNs';
@@ -53,7 +68,7 @@
           const hash = search.querySelector('input').value;
           const bsn = await db.get(storeName, hash);
           if ( bsn )
-            result.innerHTML = `Het bijbehorende BSN is <code>${bsn}</code>.`;
+            result.innerHTML = `Het BSN behorende bij MD5 hash <code>${hash}</code> is <code>${bsn}</code>.`;
           else
             result.innerText = "Geen BSN gevonden. Heb je al op start geklikt? Anders zit de hash die je zoekt blijkbaar niet in het gekozen interval.";
         });
@@ -70,6 +85,8 @@
             finish = temp;
           }
           if ( !(await checkStorage(start, finish)) ) return;
+          search.querySelector('input').value = '';
+          hashbox.querySelector('input').value = '';
           worker.postMessage({
             type: 'generate',
             value: [start, finish]
@@ -136,11 +153,11 @@
       #generate input {
         width: 100px;
       }
-      #search {
+      #search, #hash {
         width: 100%;
         display: flex;
       }
-      #search input {
+      #search input, #hash input {
         flex: 1 1 auto;
       }
       h3 {
@@ -199,6 +216,10 @@
         <input type="number" value="123000000" id="start"/> en
         <input type="number" value="124000000" id="finish"/>
         <button type="submit">Start</button>
+      </form>
+      <form id="hash">
+        <input type="text" placeholder="BSN"/>
+        <button type="submit">"Versleutel"</button>
       </form>
       <form id="search">
         <input type="text" placeholder="MD5 hash"/>
